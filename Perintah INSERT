@@ -1,0 +1,191 @@
+Tahap 1: Persiapan Server & Aktivasi DatabaseMenjalankan XAMPP: Mengaktifkan layanan Apache dan MySQL melalui XAMPP Control Panel hingga statusnya berwarna hijau (running).   
+Memilih Database & Mengecek Tabel: Membuka phpMyAdmin, mengaktifkan database db_dwi_indarti_wardani, serta memastikan seluruh 7 tabel sudah tersedia:   
+USE db_dwi_indarti_wardani;
+SELECT DATABASE();
+SHOW TABLES;
+
+Tahap 2: Pengisian Data (INSERT INTO)
+Pengisian data dilakukan secara berurutan dari tabel induk (parent table) menuju tabel anak (child table) agar referensi Foreign Key terpenuhi:   1.Mengisi Data Tabel program_studi (3 baris data):
+INSERT INTO program_studi (kode_prodi, nama_prodi, fakultas)
+VALUES
+('P01', 'Teknologi Informasi', 'FDIK'),
+('P02', 'Manajemen Dakwah', 'FDIK'),
+('P03', 'Bimbingan Konseling Islam', 'FDIK');
+
+2.Mengisi Data Tabel dosen (15 baris data untuk 3 Prodi):
+-- Dosen Prodi P01 (Teknologi Informasi)
+INSERT INTO dosen (kode_induk_dosen, email, nama_dosen, jenis_kelamin, no_telepon, kode_prodi)
+VALUES
+('DTI01', 'dosenTI1@kampus.ac.id', 'Ahmad Fauzi', 'L', '081234100001', 'P01'),
+('DTI02', 'dosenTI2@kampus.ac.id', 'Siti Aminah', 'P', '081234100002', 'P01'),
+('DTI03', 'dosenTI3@kampus.ac.id', 'Budi Santoso', 'L', '081234100003', 'P01'),
+('DTI04', 'dosenTI4@kampus.ac.id', 'Rina Mariana', 'P', '081234100004', 'P01'),
+('DTI05', 'dosenTI5@kampus.ac.id', 'Hendra Wijaya', 'L', '081234100005', 'P01');
+
+-- Dosen Prodi P02 (Manajemen Dakwah)
+INSERT INTO dosen (kode_induk_dosen, email, nama_dosen, jenis_kelamin, no_telepon, kode_prodi)
+VALUES
+('DMD01', 'dosenMD1@kampus.ac.id', 'Dewi Lestari', 'P', '081234200006', 'P02'),
+('DMD02', 'dosenMD2@kampus.ac.id', 'Agus Salim', 'L', '081234200007', 'P02'),
+('DMD03', 'dosenMD3@kampus.ac.id', 'Nurul Hidayah', 'P', '081234200008', 'P02'),
+('DMD04', 'dosenMD4@kampus.ac.id', 'Fitri Handayani', 'P', '081234200009', 'P02'),
+('DMD05', 'dosenMD5@kampus.ac.id', 'Rizal Fahmi', 'L', '081234200010', 'P02');
+
+-- Dosen Prodi P03 (Bimbingan Konseling Islam)
+INSERT INTO dosen (kode_induk_dosen, email, nama_dosen, jenis_kelamin, no_telepon, kode_prodi)
+VALUES
+('DBKI01', 'dosenBKI1@kampus.ac.id', 'Laila Sari', 'P', '081234300011', 'P03'),
+('DBKI02', 'dosenBKI2@kampus.ac.id', 'Yusuf Maulana', 'L', '081234300012', 'P03'),
+('DBKI03', 'dosenBKI3@kampus.ac.id', 'Mira Anggraini', 'P', '081234300013', 'P03'),
+('DBKI04', 'dosenBKI4@kampus.ac.id', 'Taufik Hidayat', 'L', '081234300014', 'P03'),
+('DBKI05', 'dosenBKI5@kampus.ac.id', 'Ratna Dewi', 'P', '081234300015', 'P03');
+
+3.Mengisi Data Tabel mata_kuliah (18 baris data untuk 3 Prodi):
+-- Mata Kuliah Prodi P01
+INSERT INTO mata_kuliah (kode_mk, nama_mk, jumlah_sks, kode_prodi)
+VALUES
+('MKTI01', 'Basis Data', 3, 'P01'),
+('MKTI02', 'Pemrograman Web', 3, 'P01'),
+('MKTI03', 'Algoritma', 3, 'P01'),
+('MKTI04', 'Jaringan Komputer', 2, 'P01'),
+('MKTI05', 'Sistem Operasi', 3, 'P01'),
+('MKTI06', 'Matematika Diskrit', 2, 'P01');
+
+-- Mata Kuliah Prodi P02
+INSERT INTO mata_kuliah (kode_mk, nama_mk, jumlah_sks, kode_prodi)
+VALUES
+('MKMD01', 'Sejarah Dakwah', 2, 'P02'),
+('MKMD02', 'Filsafat Ilmu', 3, 'P02'),
+('MKMD03', 'Manajemen Organisasi', 2, 'P02'),
+('MKMD04', 'Tauhid', 2, 'P02'),
+('MKMD05', 'Dakwah Pembangunan', 3, 'P02'),
+('MKMD06', 'Psikologi Dakwah', 2, 'P02');
+
+-- Mata Kuliah Prodi P03
+INSERT INTO mata_kuliah (kode_mk, nama_mk, jumlah_sks, kode_prodi)
+VALUES
+('MKBKI01', 'Akhlak Tasawuf', 2, 'P03'),
+('MKBKI02', 'Bimbingan Kelompok', 3, 'P03'),
+('MKBKI03', 'Media Konseling', 2, 'P03'),
+('MKBKI04', 'Konseling Islam', 2, 'P03'),
+('MKBKI05', 'Ilmu Komunikasi', 3, 'P03'),
+('MKBKI06', 'Psikologi Umum', 2, 'P03');
+
+4.Mengisi Data Tabel mahasiswa (24 baris data untuk 3 Prodi):
+-- Mahasiswa Prodi P01
+INSERT INTO mahasiswa (nim, nama_mhs, jenis_kelamin, alamat, tanggal_lahir, tahun_angkatan, kode_prodi, kode_induk_dosen)
+VALUES
+('2025010001', 'Dwi Indarti', 'P', 'Selong', '2006-03-05', '2025', 'P01', 'DTI01'),
+('2025010002', 'Ani Lestari', 'P', 'Gerung', '2006-04-08', '2025', 'P01', 'DTI02'),
+('2025010003', 'Budi Hartono', 'L', 'Narmada', '2006-05-11', '2025', 'P01', 'DTI03'),
+('2025010004', 'Citra Dewi', 'P', 'Lombok Timur', '2006-06-14', '2025', 'P01', 'DTI04'),
+('2025010005', 'Dedi Kurniawan', 'L', 'Cakranegara', '2006-07-17', '2025', 'P01', 'DTI05'),
+('2025010006', 'Eka Putri', 'P', 'Ampenan', '2006-08-20', '2025', 'P01', 'DTI01'),
+('2025010007', 'Fajar Ramadhan', 'L', 'Mataram', '2006-09-23', '2025', 'P01', 'DTI02'),
+('2025010008', 'Gita Permata', 'P', 'Praya', '2006-10-26', '2025', 'P01', 'DTI03');
+
+-- Mahasiswa Prodi P02
+INSERT INTO mahasiswa (nim, nama_mhs, jenis_kelamin, alamat, tanggal_lahir, tahun_angkatan, kode_prodi, kode_induk_dosen)
+VALUES
+('2025020009', 'Hadi Pratama', 'L', 'Gerung', '2006-04-06', '2025', 'P02', 'DMD01'),
+('2025020010', 'Indah Sari', 'P', 'Narmada', '2006-05-09', '2025', 'P02', 'DMD02'),
+('2025020011', 'Joko Susilo', 'L', 'Lombok Timur', '2006-06-12', '2025', 'P02', 'DMD03'),
+('2025020012', 'Kartika Putri', 'P', 'Cakranegara', '2006-07-15', '2025', 'P02', 'DMD04'),
+('2025020013', 'Lalu Rizki', 'L', 'Ampenan', '2006-08-18', '2025', 'P02', 'DMD05'),
+('2025020014', 'Mega Wati', 'P', 'Mataram', '2006-09-21', '2025', 'P02', 'DMD01'),
+('2025020015', 'Nanda Saputra', 'L', 'Praya', '2006-10-24', '2025', 'P02', 'DMD02'),
+('2025020016', 'Okta Maulana', 'L', 'Selong', '2006-11-27', '2025', 'P02', 'DMD03');
+
+-- Mahasiswa Prodi P03
+INSERT INTO mahasiswa (nim, nama_mhs, jenis_kelamin, alamat, tanggal_lahir, tahun_angkatan, kode_prodi, kode_induk_dosen)
+VALUES
+('2025030017', 'Putri Ayu', 'P', 'Narmada', '2006-05-07', '2025', 'P03', 'DBKI01'),
+('2025030018', 'Qori Rahman', 'L', 'Lombok Timur', '2006-06-10', '2025', 'P03', 'DBKI02'),
+('2025030019', 'Rudi Hermawan', 'L', 'Cakranegara', '2006-07-13', '2025', 'P03', 'DBKI03'),
+('2025030020', 'Sari Handayani', 'P', 'Ampenan', '2006-08-16', '2025', 'P03', 'DBKI04'),
+('2025030021', 'Tono Wibowo', 'L', 'Mataram', '2006-09-19', '2025', 'P03', 'DBKI05'),
+('2025030022', 'Umi Kalsum', 'P', 'Praya', '2006-10-22', '2025', 'P03', 'DBKI01'),
+('2025030023', 'Wawan Setiawan', 'L', 'Selong', '2006-11-25', '2025', 'P03', 'DBKI02'),
+('2025030024', 'Yuni Astuti', 'P', 'Gerung', '2006-12-28', '2025', 'P03', 'DBKI03');
+
+5.Mengisi Data Tabel kelas_kuliah (90 baris data: 30 kelas per prodi):
+-- Kelas Kuliah Prodi P01 (30 baris)
+INSERT INTO kelas_kuliah (kode_kelas, nama_kelas, tahun_ajaran, kode_induk_dosen, kode_mk)
+VALUES
+('KLSTI1A', 'Basis Data A', '2025/2026', 'DTI01', 'MKTI01'), ('KLSTI1B', 'Basis Data B', '2025/2026', 'DTI02', 'MKTI01'),
+('KLSTI1C', 'Basis Data C', '2025/2026', 'DTI03', 'MKTI01'), ('KLSTI1D', 'Basis Data D', '2025/2026', 'DTI04', 'MKTI01'),
+('KLSTI1E', 'Basis Data E', '2025/2026', 'DTI05', 'MKTI01'), ('KLSTI2A', 'Pemrograman Web A', '2025/2026', 'DTI01', 'MKTI02'),
+('KLSTI2B', 'Pemrograman Web B', '2025/2026', 'DTI02', 'MKTI02'), ('KLSTI2C', 'Pemrograman Web C', '2025/2026', 'DTI03', 'MKTI02'),
+('KLSTI2D', 'Pemrograman Web D', '2025/2026', 'DTI04', 'MKTI02'), ('KLSTI2E', 'Pemrograman Web E', '2025/2026', 'DTI05', 'MKTI02'),
+('KLSTI3A', 'Algoritma A', '2025/2026', 'DTI01', 'MKTI03'), ('KLSTI3B', 'Algoritma B', '2025/2026', 'DTI02', 'MKTI03'),
+('KLSTI3C', 'Algoritma C', '2025/2026', 'DTI03', 'MKTI03'), ('KLSTI3D', 'Algoritma D', '2025/2026', 'DTI04', 'MKTI03'),
+('KLSTI3E', 'Algoritma E', '2025/2026', 'DTI05', 'MKTI03'), ('KLSTI4A', 'Jaringan Komputer A', '2025/2026', 'DTI01', 'MKTI04'),
+('KLSTI4B', 'Jaringan Komputer B', '2025/2026', 'DTI02', 'MKTI04'), ('KLSTI4C', 'Jaringan Komputer C', '2025/2026', 'DTI03', 'MKTI04'),
+('KLSTI4D', 'Jaringan Komputer D', '2025/2026', 'DTI04', 'MKTI04'), ('KLS104E', 'Jaringan Komputer E', '2025/2026', 'DTI05', 'MKTI04'),
+('KLSTI5A', 'Sistem Operasi A', '2025/2026', 'DTI01', 'MKTI05'), ('KLSTI5B', 'Sistem Operasi B', '2025/2026', 'DTI02', 'MKTI05'),
+('KLSTI5C', 'Sistem Operasi C', '2025/2026', 'DTI03', 'MKTI05'), ('KLSTI5D', 'Sistem Operasi D', '2025/2026', 'DTI04', 'MKTI05'),
+('KLSTI5E', 'Sistem Operasi E', '2025/2026', 'DTI05', 'MKTI05'), ('KLSTI6A', 'Matematika Diskrit A', '2025/2026', 'DTI01', 'MKTI06'),
+('KLSTI6B', 'Matematika Diskrit B', '2025/2026', 'DTI02', 'MKTI06'), ('KLSTI6C', 'Matematika Diskrit C', '2025/2026', 'DTI03', 'MKTI06'),
+('KLSTI6D', 'Matematika Diskrit D', '2025/2026', 'DTI04', 'MKTI06'), ('KLSTI6E', 'Matematika Diskrit E', '2025/2026', 'DTI05', 'MKTI06');
+
+-- Kelas Kuliah Prodi P02 (30 baris)
+INSERT INTO kelas_kuliah (kode_kelas, nama_kelas, tahun_ajaran, kode_induk_dosen, kode_mk)
+VALUES
+('KLSMD1A', 'Sejarah Dakwah A', '2025/2026', 'DMD01', 'MKMD01'), ('KLSMD1B', 'Sejarah Dakwah B', '2025/2026', 'DMD02', 'MKMD01'),
+('KLSMD1C', 'Sejarah Dakwah C', '2025/2026', 'DMD03', 'MKMD01'), ('KLSMD1D', 'Sejarah Dakwah D', '2025/2026', 'DMD04', 'MKMD01'),
+('KLSMD1E', 'Sejarah Dakwah E', '2025/2026', 'DMD05', 'MKMD01'), ('KLSMD2A', 'Filsafat Ilmu A', '2025/2026', 'DMD01', 'MKMD02'),
+('KLSMD2B', 'Filsafat Ilmu B', '2025/2026', 'DMD02', 'MKMD02'), ('KLSMD2C', 'Filsafat Ilmu C', '2025/2026', 'DMD03', 'MKMD02'),
+('KLSMD2D', 'Filsafat Ilmu D', '2025/2026', 'DMD04', 'MKMD02'), ('KLSMD2E', 'Filsafat Ilmu E', '2025/2026', 'DMD05', 'MKMD02'),
+('KLSMD3A', 'Manajemen Organisasi A', '2025/2026', 'DMD01', 'MKMD03'), ('KLSMD3B', 'Manajemen Organisasi B', '2025/2026', 'DMD02', 'MKMD03'),
+('KLSMD3C', 'Manajemen Organisasi C', '2025/2026', 'DMD03', 'MKMD03'), ('KLSMD3D', 'Manajemen Organisasi D', '2025/2026', 'DMD04', 'MKMD03'),
+('KLSMD3E', 'Manajemen Organisasi E', '2025/2026', 'DMD05', 'MKMD03'), ('KLSMD4A', 'Tauhid A', '2025/2026', 'DMD01', 'MKMD04'),
+('KLSMD4B', 'Tauhid B', '2025/2026', 'DMD02', 'MKMD04'), ('KLSMD4C', 'Tauhid C', '2025/2026', 'DMD03', 'MKMD04'),
+('KLSMD4D', 'Tauhid D', '2025/2026', 'DMD04', 'MKMD04'), ('KLSMD4E', 'Tauhid E', '2025/2026', 'DMD05', 'MKMD04'),
+('KLSMD5A', 'Dakwah Pembangunan A', '2025/2026', 'DMD01', 'MKMD05'), ('KLSMD5B', 'Dakwah Pembangunan B', '2025/2026', 'DMD02', 'MKMD05'),
+('KLSMD5C', 'Dakwah Pembangunan C', '2025/2026', 'DMD03', 'MKMD05'), ('KLSMD5D', 'Dakwah Pembangunan D', '2025/2026', 'DMD04', 'MKMD05'),
+('KLSMD5E', 'Dakwah Pembangunan E', '2025/2026', 'DMD05', 'MKMD05'), ('KLSMD6A', 'Psikologi Dakwah A', '2025/2026', 'DMD01', 'MKMD06'),
+('KLSMD6B', 'Psikologi Dakwah B', '2025/2026', 'DMD02', 'MKMD06'), ('KLSMD6C', 'Psikologi Dakwah C', '2025/2026', 'DMD03', 'MKMD06'),
+('KLSMD6D', 'Psikologi Dakwah D', '2025/2026', 'DMD04', 'MKMD06'), ('KLSMD6E', 'Psikologi Dakwah E', '2025/2026', 'DMD05', 'MKMD06');
+
+-- Kelas Kuliah Prodi P03 (30 baris)
+INSERT INTO kelas_kuliah (kode_kelas, nama_kelas, tahun_ajaran, kode_induk_dosen, kode_mk)
+VALUES
+('KLSBKI1A', 'Akhlak Tasawuf A', '2025/2026', 'DBKI01', 'MKBKI01'), ('KLSBKI1B', 'Akhlak Tasawuf B', '2025/2026', 'DBKI02', 'MKBKI01'),
+('KLSBKI1C', 'Akhlak Tasawuf C', '2025/2026', 'DBKI03', 'MKBKI01'), ('KLSBKI1D', 'Akhlak Tasawuf D', '2025/2026', 'DBKI04', 'MKBKI01'),
+('KLSBKI1E', 'Akhlak Tasawuf E', '2025/2026', 'DBKI05', 'MKBKI01'), ('KLSBKI2A', 'Bimbingan Kelompok A', '2025/2026', 'DBKI01', 'MKBKI02'),
+('KLSBKI2B', 'Bimbingan Kelompok B', '2025/2026', 'DBKI02', 'MKBKI02'), ('KLSBKI2C', 'Bimbingan Kelompok C', '2025/2026', 'DBKI03', 'MKBKI02'),
+('KLSBKI2D', 'Bimbingan Kelompok D', '2025/2026', 'DBKI04', 'MKBKI02'), ('KLSBKI2E', 'Bimbingan Kelompok E', '2025/2026', 'DBKI05', 'MKBKI02'),
+('KLSBKI3A', 'Media Konseling A', '2025/2026', 'DBKI01', 'MKBKI03'), ('KLSBKI3B', 'Media Konseling B', '2025/2026', 'DBKI02', 'MKBKI03'),
+('KLSBKI3C', 'Media Konseling C', '2025/2026', 'DBKI03', 'MKBKI03'), ('KLSBKI3D', 'Media Konseling D', '2025/2026', 'DBKI04', 'MKBKI03'),
+('KLSBKI3E', 'Media Konseling E', '2025/2026', 'DBKI05', 'MKBKI03'), ('KLSBKI4A', 'Konseling Islam A', '2025/2026', 'DBKI01', 'MKBKI04'),
+('KLSBKI4B', 'Konseling Islam B', '2025/2026', 'DBKI02', 'MKBKI04'), ('KLSBKI4C', 'Konseling Islam C', '2025/2026', 'DBKI03', 'MKBKI04'),
+('KLSBKI4D', 'Konseling Islaml D', '2025/2026', 'DBKI04', 'MKBKI04'), ('KLSBKI4E', 'Konseling Islam E', '2025/2026', 'DBKI05', 'MKBKI04'),
+('KLSBKI5A', 'Ilmu Komunikasi A', '2025/2026', 'DBKI01', 'MKBKI05'), ('KLSBKI5B', 'Ilmu Komunikasi', '2025/2026', 'DBKI02', 'MKBKI05'),
+('KLSBKI5C', 'Ilmu Komunikasi C', '2025/2026', 'DBKI03', 'MKBKI05'), ('KLSBKI5D', 'Ilmu Komunikasi D', '2025/2026', 'DBKI04', 'MKBKI05'),
+('KLSBKI5E', 'Ilmu Komunikasi E', '2025/2026', 'DBKI05', 'MKBKI05'), ('KLSBKI6A', 'Psikologi Umum A', '2025/2026', 'DBKI01', 'MKBKI06'),
+('KLSBKI6B', 'Psikologi Umum B', '2025/2026', 'DBKI02', 'MKBKI06'), ('KLSBKI6C', 'Psikologi Umum C', '2025/2026', 'DBKI03', 'MKBKI06'),
+('KLSBKI6D', 'Psikologi Umum D', '2025/2026', 'DBKI04', 'MKBKI06'), ('KLSBKI6E', 'Psikologi Umum E', '2025/2026', 'DBKI05', 'MKBKI06');
+
+6.Mengisi Data Tabel krs (144 baris data: 6 mata kuliah x 24 mahasiswa):
+-- Contoh struktur query INSERT untuk tabel krs (diulang untuk seluruh NIM 2025010001 s.d. 2025030024)
+INSERT INTO krs (semester, tanggal_pengambilan, nim, kode_mk)
+VALUES
+('Ganjil', '2025-09-01', '2025010001', 'MKTI01'),
+('Ganjil', '2025-09-01', '2025010001', 'MKTI02'),
+('Ganjil', '2025-09-01', '2025010001', 'MKTI03'),
+('Genap', '2026-02-01', '2025010001', 'MKTI04'),
+('Genap', '2026-02-01', '2025010001', 'MKTI05'),
+('Genap', '2026-02-01', '2025010001', 'MKTI06');
+-- (Dilanjutkan dengan pola tanggal 02 s.d. 08 untuk 8 mahasiswa tiap prodi)
+
+7.Mengisi Data Tabel nilai (144 baris data: 6 nilai mata kuliah x 24 mahasiswa):
+-- Contoh struktur query INSERT untuk tabel nilai (diulang untuk seluruh NIM 2025010001 s.d. 2025030024)
+INSERT INTO nilai (nilai_tugas, nilai_uts, nilai_uas, nilai_akhir, nim, kode_induk_dosen)
+VALUES
+(76, 80, 72, 75.60, '2025010001', 'DTI03'),
+(75, 72, 67, 70.90, '2025010001', 'DTI04'),
+(78, 90, 95, 88.40, '2025010001', 'DTI05'),
+(75, 69, 95, 81.20, '2025010001', 'DTI01'),
+(92, 60, 77, 76.40, '2025010001', 'DTI02'),
+(61, 91, 71, 74.00, '2025010001', 'DTI03');
+-- (Dilanjutkan untuk seluruh 24 mahasiswa sesuai dosen pengampu di prodi masing-masing)
