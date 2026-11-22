@@ -1,0 +1,47 @@
+Tahap 3: Verifikasi Seluruh Isi Tabel (SELECT *)
+Memeriksa seluruh data yang baru saja dimasukkan dan memastikan jumlah total baris (rows) pada setiap tabel sudah sesuai:   
+SELECT * FROM program_studi;  -- Total: 3 baris
+SELECT * FROM dosen;          -- Total: 15 baris
+SELECT * FROM mata_kuliah;    -- Total: 18 baris
+SELECT * FROM mahasiswa;      -- Total: 24 baris
+SELECT * FROM kelas_kuliah;   -- Total: 90 baris
+SELECT * FROM krs;            -- Total: 144 baris
+SELECT * FROM nilai;          -- Total: 144 baris
+
+Tahap 4: Pembaruan Data (UPDATE)
+Melakukan perubahan pada data yang sudah tersimpan menggunakan klausa WHERE agar perubahan spesifik pada baris tertentu:   
+1.Memperbarui Nomor Telepon Dosen (DBKI01): Mengubah no_telepon Laila Sari dari 081234300011 menjadi 081234300099:   
+UPDATE dosen
+SET no_telepon = '081234300099'
+WHERE kode_induk_dosen = 'DBKI01';
+
+SELECT * FROM dosen WHERE kode_induk_dosen = 'DBKI01';
+
+Tahap 5: Uji Tambah & Hapus Data (INSERT & DELETE)
+1.Menambahkan Data Uji Coba pada Tabel mahasiswa:
+INSERT INTO mahasiswa (nim, nama_mhs, jenis_kelamin, alamat, tanggal_lahir, tahun_angkatan, kode_prodi, kode_induk_dosen)
+VALUES
+('2025990098', 'COBA DWI', 'p', 'Mataram', '2006-01-01', '2025', 'P01', 'DTI01'),
+('2025990099', 'COBA ALDA', 'P', 'Mataram', '2006-01-02', '2025', 'P01', 'DTI01');
+
+SELECT * FROM mahasiswa;
+
+2.Menghapus Salah Satu Data Uji Coba (DELETE FROM): Menghapus data mahasiswa dengan NIM 2025990099 (COBA ALDA):   
+DELETE FROM mahasiswa
+WHERE nim = '2025990099';
+
+SELECT * FROM mahasiswa;
+
+Tahap 6: Pengujian Integritas Referensial (Foreign Key Constraint)Uji Error Foreign Key (#1452): Mencoba memasukkan data mata kuliah dengan kode_prodi = 'P04' yang belum terdaftar di tabel induk program_studi. MySQL menolak perintah ini karena melanggar aturan Foreign Key:   
+
+INSERT INTO mata_kuliah (kode_mk, nama_mk, jumlah_sks, kode_prodi)
+VALUES ('MKPMI', 'Hubungan Masyarakat', '2', 'P04');
+-- Hasil: Error #1452 (Cannot add or update a child row: a foreign key constraint fails)
+
+Solusi Perbaikan: Menambahkan data P04 terlebih dahulu ke dalam tabel induk program_studi, barulah data mata kuliah MKPMI bisa dimasukkan:   
+
+INSERT INTO program_studi (kode_prodi, nama_prodi, fakultas)
+VALUES ('P04', 'Pemikiran Masyarakat Islam', 'FDIK');
+
+INSERT INTO mata_kuliah (kode_mk, nama_mk, jumlah_sks, kode_prodi)
+VALUES ('MKPMI', 'Hubungan Masyarakat', 2, 'P04');
